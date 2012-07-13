@@ -136,4 +136,16 @@ describe Shellfish do
 
     @stderr.should == ["hello, world\n"]
   end
+
+  it "should return true if file exists" do
+    mock_process(kind_of(String), [], [], 0)
+
+    @shell.file_exists?("test_file").should == true
+  end
+
+  it "should return false if check file does not exist" do
+    mock_process(kind_of(String), [], [], 1)
+
+    @shell.file_exists?("test_file").should == false
+  end
 end

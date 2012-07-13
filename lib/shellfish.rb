@@ -94,6 +94,22 @@ class Shellfish
     @pwd = File.expand_path(new_pwd)
   end
 
+  def path_exists?(filename)
+    remote_run("[ -e #{sanitize(filename)} ]") == 0
+  end
+
+  def file_exists?(filename)
+    remote_run("[ -f #{sanitize(filename)} ]") == 0
+  end
+
+  def directory_exists?(filename)
+    remote_run("[ -d #{sanitize(filename)} ]") == 0
+  end
+
+  def link_exists?(filename)
+    remote_run("[ -L #{sanitize(filename)} ]") == 0
+  end
+
   def load_rvm
     remote_run("source .rvm/environments/default && env") do |stream, data|
       if stream == :stderr
