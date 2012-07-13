@@ -140,12 +140,12 @@ describe Shellfish do
   it "should return true if file exists" do
     mock_process(kind_of(String), [], [], 0)
 
-    @shell.file_exists?("test_file").should == true
+    @shell.file?("test_file").should == true
   end
 
   it "should return false if check file does not exist" do
     mock_process(kind_of(String), [], [], 1)
 
-    @shell.file_exists?("test_file").should == false
+    @shell.file?("test_file").should == false
   end
 end

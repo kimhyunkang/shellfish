@@ -4,8 +4,8 @@ require 'shellwords'
 
 class Shellfish
   class Abort < StandardError
-    def initialize(msg)
-      super(msg)
+    def initialize(*args)
+      super(*args)
     end
   end
 
@@ -94,19 +94,19 @@ class Shellfish
     @pwd = File.expand_path(new_pwd)
   end
 
-  def path_exists?(filename)
+  def exists?(filename)
     remote_run("[ -e #{sanitize(filename)} ]") == 0
   end
 
-  def file_exists?(filename)
+  def file?(filename)
     remote_run("[ -f #{sanitize(filename)} ]") == 0
   end
 
-  def directory_exists?(filename)
+  def directory?(filename)
     remote_run("[ -d #{sanitize(filename)} ]") == 0
   end
 
-  def link_exists?(filename)
+  def link?(filename)
     remote_run("[ -L #{sanitize(filename)} ]") == 0
   end
 
