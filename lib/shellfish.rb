@@ -36,6 +36,9 @@ class Shellfish
           end
           print line
         end
+        if data.length > 0 && data[-1] != ?\n
+          stdout_linestart = false
+        end
       end
     end
 
@@ -49,6 +52,9 @@ class Shellfish
           stderr_linestart = true
         end
         print line
+      end
+      if data.length > 0 && data[-1] != ?\n
+        stderr_linestart = false
       end
     end
 
