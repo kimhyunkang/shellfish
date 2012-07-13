@@ -20,30 +20,32 @@ class Shellfish
     @env = {}
     @rvm_loaded = false
 
-    @stdout_callback = lambda do |channel, data, line_start|
+    stdout_linestart = true
+    @stdout_callback = lambda do |channel, data|
       if data =~ /^\[sudo\] password for /
         password = HighLine.new.ask(data) {|q| q.echo = false}
         channel.send_data(password + "\n")
       else
         prefix = "[OUT]: "
         data.each_line do |line|
-          if line_start
+          if stdout_linestart
             print prefix
           else
-            line_start = true
+            stdout_linestart = true
           end
           print line
         end
       end
     end
 
-    @stderr_callback = lambda do |channel, data, line_start|
+    stderr_linestart = true
+    @stderr_callback = lambda do |channel, data|
       prefix = "[ERR]: "
       data.each_line do |line|
-        if line_start
+        if stderr_linestart
           print prefix
         else
-          line_start = true
+          stderr_linestart = true
         end
         print line
       end
