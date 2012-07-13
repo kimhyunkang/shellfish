@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/kimhyunkang/shellfish'
   spec.platform = Gem::Platform::RUBY
   spec.require_paths = ['lib']
-  spec.required_ruby_version = '>= 1.9'
+  spec.required_ruby_version = '>= 1.8.7'
 
   spec.add_dependency 'net-ssh', '~> 2.5.2'
   spec.add_dependency 'highline', '~> 1.6.13'

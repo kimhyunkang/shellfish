@@ -56,7 +56,7 @@ describe Shellfish do
   end
 
   it "should successfully cd to root" do
-    mock_process("cd /", [], [], 0)
+    mock_process('cd "/"', [], [], 0)
 
     @shell.cd "/"
 
@@ -64,7 +64,7 @@ describe Shellfish do
   end
 
   it "should successfully cd to absolute directory" do
-    mock_process("cd /test/dir", [], [], 0)
+    mock_process('cd "/test/dir"', [], [], 0)
 
     @shell.cd "/test/dir"
 
@@ -72,7 +72,7 @@ describe Shellfish do
   end
 
   it "should successfully cd to relative directory" do
-    mock_process("cd test/dir", [], [], 0)
+    mock_process('cd "test/dir"', [], [], 0)
 
     @shell.cd "test/dir"
 
@@ -80,7 +80,7 @@ describe Shellfish do
   end
 
   it "should successfully cd to the parent directory" do
-    mock_process("cd ../another_user", [], [], 0)
+    mock_process('cd "../another_user"', [], [], 0)
 
     @shell.cd "../another_user"
 
@@ -88,9 +88,15 @@ describe Shellfish do
   end
 
   it "should run command on pwd" do
-    mock_process("cd /home/testuser && test_command", [], [], 0)
+    mock_process('cd "/home/testuser" && test_command', [], [], 0)
 
     @shell.run "test_command"
+  end
+
+  it "should run command and return a return code" do
+    mock_process('cd "/home/testuser" && test_command', [], [], 0)
+
+    @shell.run("test_command").should == 0
   end
 
   it "should run sudo command" do

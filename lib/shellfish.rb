@@ -1,5 +1,6 @@
 require 'net/ssh'
 require 'highline'
+require 'shellwords'
 
 class Shellfish
   class Abort < StandardError
@@ -87,9 +88,9 @@ class Shellfish
   end
 
   def cd(target)
-    remote_cmd = "cd #{target}"
+    remote_cmd = "cd #{sanitize(target)}"
     remote_run(remote_cmd)
-    new_pwd = if target[0] == ?/ then target else "#{@pwd}/#{target}" end
+    new_pwd = if target[0] == ?/ then target else File.join(@pwd, target) end
     @pwd = File.expand_path(new_pwd)
   end
 
@@ -124,11 +125,17 @@ class Shellfish
   private
 
   def env_string
-    @env.map { |k,v| "#{k}=#{v}" }.join " " unless @env.empty?
+    unless @env.empty?
+      @env.map { |k,v| "#{k.shellescape}=#{v.shellescape}" }.join " "
+    end
+  end
+
+  def sanitize(path)
+    "\"#{path.shellescape}\""
   end
 
   def command_string(cmd)
-    cd_string = "cd #{@pwd} &&"
+    cd_string = "cd #{sanitize(@pwd)} &&"
     [cd_string, env_string, cmd].compact.join(" ")
   end
 
@@ -179,6 +186,6 @@ class Shellfish
     end
 
     channel.wait
-    raise Abort, exit_code.to_s if exit_code != 0
+    exit_code
   end
 end
